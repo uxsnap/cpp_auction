@@ -1,8 +1,8 @@
 #include "AuctionMember.hpp"
 
-AuctionMember::AuctionMember(unsigned long memberId, unsigned long newMoneySum)
+AuctionMember::AuctionMember(unsigned long mid, unsigned long newMoneySum)
 {
-    memberId = memberId;
+    memberId = mid;
     moneySum = new MoneySum(newMoneySum);
     itemStock = new ItemStock();
 }
@@ -41,7 +41,7 @@ std::string AuctionMember::getInfo()
 
     for (Item* item: itemStock->getItems())
     {
-        res += "\t" + item->getItemInfo();
+        res += "\t" + item->getItemNameInfo() + "\t" + item->getItemPriceInfo();
     }
 
     return res;

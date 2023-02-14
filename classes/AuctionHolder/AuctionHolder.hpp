@@ -12,7 +12,7 @@ public:
     void printAllItems();
 
     ItemStock* getItemStock();
-
+    unsigned long getSum();
     void addSum(unsigned long);
     
 private:

@@ -9,7 +9,9 @@ public:
     Item(std::string, unsigned long);
 
     unsigned long getItemPrice();
-    std::string getItemInfo();
+    std::string getItemName();
+    std::string getItemNameInfo();
+    std::string getItemPriceInfo();
 
 private:
     std::string name;
