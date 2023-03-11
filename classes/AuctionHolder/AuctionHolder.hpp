@@ -9,8 +9,6 @@ public:
     AuctionHolder(unsigned long, unsigned long);
     ~AuctionHolder();
 
-    void printAllItems();
-
     ItemStock* getItemStock();
     unsigned long getSum();
     void addSum(unsigned long);

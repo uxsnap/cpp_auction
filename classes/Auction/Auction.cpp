@@ -99,16 +99,16 @@ void Auction::start()
     
     ItemStock* itemStock = auctionHolder->getItemStock();
     std::vector<Item*> &items = itemStock->getItems();
+    std::vector<Item *>::iterator curItem;
 
-    while (items.size() != 0)
+    for(curItem = items.begin();curItem != items.end();curItem++) 
     {
-        Item* curItem = items.back();
 
-        unsigned long revenue = findTheNewOwner(curItem);
+        unsigned long revenue = findTheNewOwner((*curItem));
 
         auctionHolder->addSum(revenue);
 
-        items.pop_back();
+        if (revenue > 0) items.pop_back();
     }
 
     std::cout << "=======================" << std::endl;

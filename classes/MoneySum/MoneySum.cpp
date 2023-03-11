@@ -11,11 +11,6 @@ unsigned long MoneySum::getSum()
     return sum;
 }
 
-void MoneySum::setSum(unsigned long newSum)
-{
-    sum = newSum;
-}
-
 void MoneySum::add(unsigned long toAdd)
 {
     sum += toAdd;
