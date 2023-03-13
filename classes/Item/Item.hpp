@@ -9,6 +9,7 @@ public:
     Item(std::string, unsigned long);
 
     unsigned long getItemPrice();
+    void setItemPrice(unsigned long newPrice);
     std::string getItemName();
     std::string getItemNameInfo();
     std::string getItemPriceInfo();

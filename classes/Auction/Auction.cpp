@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Auction.hpp"
 
 Auction::Auction() {}
@@ -13,11 +14,12 @@ Auction::~Auction()
 
 void Auction::getAuctionHolder()
 {
-    uint auctionHolderSum;
-    uint auctionHolderItemQuantity;
+    long int auctionHolderSum;
+    long int auctionHolderItemQuantity;
 
     std::cout << "Введите сумму счета аукциониста и кол-во предметов: ";
     std::cin >> auctionHolderSum >> auctionHolderItemQuantity;
+
 
     assert(auctionHolderSum > 0);
     assert(auctionHolderItemQuantity > 0);
@@ -27,14 +29,14 @@ void Auction::getAuctionHolder()
 
 void Auction::getAuctionMembers()
 {
-    uint auctionMembersQuantity;
+    long int auctionMembersQuantity;
 
     std::cout << "Введите количество участников аукциона: ";
     std::cin >> auctionMembersQuantity;
 
     assert(auctionMembersQuantity > 0);
 
-    unsigned long currentSum;
+    long int currentSum;
 
     for (uint i = 0; i < auctionMembersQuantity; i++)
     {
@@ -54,7 +56,7 @@ unsigned long Auction::findTheNewOwner(Item *curItem)
     unsigned long max = curItem->getItemPrice();
     AuctionMember* neededAuctionMember = nullptr;
 
-    unsigned long curSum;
+    long int curSum;
 
     std::cout << "Стартовая цена товара " + curItem->getItemName() + ": " + std::to_string(max) << std::endl;
 
@@ -67,7 +69,7 @@ unsigned long Auction::findTheNewOwner(Item *curItem)
             std::cin >> curSum;
         } while (curSum <= 0);
 
-        if (curSum > max)
+        if (curSum > max && am->getMemberSum() >= curSum)
         {
             neededAuctionMember = am;
             max = curSum;
@@ -82,7 +84,9 @@ unsigned long Auction::findTheNewOwner(Item *curItem)
     } else {
         std::cout << "Победителем стал участник " + std::to_string(neededAuctionMember->getMemberId()) << std::endl;
         std::cout << "=======================" << std::endl;
-    
+
+        curItem->setItemPrice(max);
+
         neededAuctionMember->addItem(curItem);
         neededAuctionMember->subtractMemberSum(max);
         
@@ -103,12 +107,9 @@ void Auction::start()
 
     for(curItem = items.begin();curItem != items.end();curItem++) 
     {
-
         unsigned long revenue = findTheNewOwner((*curItem));
 
         auctionHolder->addSum(revenue);
-
-        if (revenue > 0) items.pop_back();
     }
 
     std::cout << "=======================" << std::endl;

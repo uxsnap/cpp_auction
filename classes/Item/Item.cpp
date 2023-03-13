@@ -17,6 +17,11 @@ unsigned long Item::getItemPrice()
     return price;
 }
 
+void Item::setItemPrice(unsigned long newPrice)
+{
+    price = newPrice;
+}
+
 std::string Item::getItemNameInfo()
 {
     return "Имя товара: " + name + "\n";
