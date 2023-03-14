@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cassert>
 #include "Auction.hpp"
 
 Auction::Auction() {}
@@ -11,7 +12,6 @@ Auction::~Auction()
     auctionMembers.clear();
 }
 
-
 void Auction::getAuctionHolder()
 {
     long int auctionHolderSum;
@@ -19,7 +19,6 @@ void Auction::getAuctionHolder()
 
     std::cout << "Введите сумму счета аукциониста и кол-во предметов: ";
     std::cin >> auctionHolderSum >> auctionHolderItemQuantity;
-
 
     assert(auctionHolderSum > 0);
     assert(auctionHolderItemQuantity > 0);
@@ -38,7 +37,7 @@ void Auction::getAuctionMembers()
 
     long int currentSum;
 
-    for (uint i = 0; i < auctionMembersQuantity; i++)
+    for (unsigned int i = 0; i < auctionMembersQuantity; i++)
     {
 
         std::cout << "Введите сумму участника номер " + std::to_string(i) + ": ";
@@ -50,21 +49,22 @@ void Auction::getAuctionMembers()
     }
 }
 
-
 unsigned long Auction::findTheNewOwner(Item *curItem)
 {
     unsigned long max = curItem->getItemPrice();
-    AuctionMember* neededAuctionMember = nullptr;
+    AuctionMember *neededAuctionMember = nullptr;
 
     long int curSum;
 
     std::cout << "Стартовая цена товара " + curItem->getItemName() + ": " + std::to_string(max) << std::endl;
 
-    for (AuctionMember* am : auctionMembers)
+    for (AuctionMember *am : auctionMembers)
     {
-        if (am->getMemberSum() < max) continue;
+        if (am->getMemberSum() < max)
+            continue;
 
-        do {
+        do
+        {
             std::cout << "Ставка участника " + std::to_string(am->getMemberId()) + ": ";
             std::cin >> curSum;
         } while (curSum <= 0);
@@ -76,12 +76,15 @@ unsigned long Auction::findTheNewOwner(Item *curItem)
         }
     }
 
-    if (neededAuctionMember == nullptr) {
+    if (neededAuctionMember == nullptr)
+    {
         std::cout << "Никто не приобрел предмет!" << std::endl;
-         std::cout << "=======================" << std::endl;
+        std::cout << "=======================" << std::endl;
 
         return 0;
-    } else {
+    }
+    else
+    {
         std::cout << "Победителем стал участник " + std::to_string(neededAuctionMember->getMemberId()) << std::endl;
         std::cout << "=======================" << std::endl;
 
@@ -89,7 +92,7 @@ unsigned long Auction::findTheNewOwner(Item *curItem)
 
         neededAuctionMember->addItem(curItem);
         neededAuctionMember->subtractMemberSum(max);
-        
+
         return max;
     }
 }
@@ -100,12 +103,12 @@ void Auction::start()
     std::cout << "=======================" << std::endl;
     getAuctionMembers();
     std::cout << "=======================" << std::endl;
-    
-    ItemStock* itemStock = auctionHolder->getItemStock();
-    std::vector<Item*> &items = itemStock->getItems();
+
+    ItemStock *itemStock = auctionHolder->getItemStock();
+    std::vector<Item *> &items = itemStock->getItems();
     std::vector<Item *>::iterator curItem;
 
-    for(curItem = items.begin();curItem != items.end();curItem++) 
+    for (curItem = items.begin(); curItem != items.end(); curItem++)
     {
         unsigned long revenue = findTheNewOwner((*curItem));
 
@@ -117,16 +120,15 @@ void Auction::start()
     printRequiredInfoInFile();
 }
 
-
 void Auction::printRequiredInfoInFile()
-{   
+{
     std::ofstream file;
     file.open("result.txt");
 
     file << "Счет аукциониста: " + std::to_string(auctionHolder->getSum()) << std::endl;
     file << "=======================" << std::endl;
 
-    for (AuctionMember* am : auctionMembers)
+    for (AuctionMember *am : auctionMembers)
     {
         file << am->getInfo();
         file << "=======================" << std::endl;
